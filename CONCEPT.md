@@ -28,8 +28,6 @@ D - "nevermind, next door's is better"
 
 As a user, I want to be able to order a PSL from the coffee shop at my desired location
 
-As a user I want to know when my order is ready
-
 As a user, I want to be able to find a coffee shop where I can afford X PSLs today
 
 As a user, I want to find something near me(within my borough)
@@ -38,6 +36,7 @@ As a user, I want to find coffee shops near me, by rating, that are open
 
 ## Stretch-goals
 
+As a user I want to know when my order is ready(animation)
 - rating of coffee shops determined by avg of PSL orders' rating
 - PSL-quota "Drink x more PSLs today, to get one free"
 - Upselling merchandise or snacks
@@ -47,3 +46,4 @@ As a user, I want to find coffee shops near me, by rating, that are open
   - Door opening
 - Scraping Coffee shop locations
 - geo-locations (lat/long)
+- city API for scraping 
