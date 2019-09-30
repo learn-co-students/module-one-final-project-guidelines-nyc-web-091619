@@ -1,0 +1,44 @@
+User Story (MVP - basic CRUB functionalities)
+
+Welcome to Bucket List Destinations!
+
+Please enter your name:
+
+Loading...
+
+We're sorry, your name was not found. Would you like to create a new account? Y/N
+
+Y - Please create an account by entering your first name
+
+N - Goodbye!
+
+-------------------------------------------------
+
+
+As a user I want to be able to:
+- Create a profile if I don't have one
+OR
+- Log in
+
+- Once a user has logged on/created a profile:
+    - User can view list of items currently on Bucket list
+    - User can view list of destinations
+        - Once viewed, and want to add from list of destinations, user has option to add destination to their Bucket list
+    - User can edit list of items on their Bucket list (change date of travel)
+    - User can delete list of item(s) on their Bucket list (changed mind,cancelled flight)
+
+
+
+Information we want to collect:
+User - name
+
+Destination
+faker gem to prepopulate destination(city, country)
+
+
+Traveller-Destination Join Model
+ID * Primary Key
+Traveller_ID
+Destination_ID
+Travelling_Start_Date
+Travelling_Return_Date
