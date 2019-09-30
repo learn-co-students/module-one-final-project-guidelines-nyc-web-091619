@@ -12,7 +12,7 @@ enter_name = prompt.ask("Please enter your first name:", default: ENV['USER'])
 
 prompt.yes?("We're sorry, we could not find your account. Would you like to create one? (Y/N)")
 
+#view items
 
-
-prompy.select
-("Choose you")
+prompt.select
+("Please choose your desintation")
