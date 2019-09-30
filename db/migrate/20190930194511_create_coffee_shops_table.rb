@@ -6,6 +6,7 @@ class CreateCoffeeShopsTable < ActiveRecord::Migration[5.2]
       t.datetime :opens_at
       t.datetime :closes_at
       t.float :cost_per_size
+      t.timestamps
     end
   end
 end

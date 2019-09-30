@@ -7,6 +7,7 @@ class CreateUserTable < ActiveRecord::Migration[5.2]
       t.string :current_location
       t.float :wallet
       t.integer :psl_quota
+      t.timestamps
     end
   end
 end
