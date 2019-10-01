@@ -13,4 +13,5 @@ class Psl < ActiveRecord::Base
   def rate(num)
     self.rating = num
   end
+
 end
