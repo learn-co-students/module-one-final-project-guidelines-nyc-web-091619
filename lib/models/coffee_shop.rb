@@ -22,7 +22,7 @@ class CoffeeShop < ActiveRecord::Base
     psl_rating_sum = psl_rating_array.reduce do |sum, rating|
       sum + rating
     end
-    psl_rating_avg = psl_rating_sum / psls_with_ratings.count
-    psl_rating_avg.round(1)
+    psl_rating_avg = (psl_rating_sum / psls_with_ratings.count) unless psl_rating_sum.nil?
+    psl_rating_avg.nil? ? "No ratings" : psl_rating_avg.round(1)
   end
 end

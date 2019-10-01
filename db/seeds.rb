@@ -47,7 +47,8 @@ size = [12, 16, 20]
     whip?: tf.sample,
     shots: bullzeye,
     size: sml,
-    paid?: true
+    paid?: true,
+    rating: (rand(5) + 1)
   )
 
 end
