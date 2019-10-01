@@ -56,9 +56,9 @@ class Cli
 
     # Screen text
     system "clear"
-    Puts "Hi, #{current_user.name}!"
-    Puts "You've got $#{current_user.wallet} in your PSL wallet"
-    Puts "You've visited #{unique_cafes}!"
+    puts "Hi, #{current_user.name}!"
+    puts "You've got $#{current_user.wallet} in your PSL wallet"
+    puts "You've visited #{unique_cafes} unique cafes!"
     choice = prompt.select("Where would you like to go next?", choices)
 
     case choice
@@ -66,12 +66,12 @@ class Cli
       current_user.affordable #.display
     when choices[1]
       rating_min = prompt.slider("Minimum rating?", min:1, max:4).to_f
-      current_user.shops_in_da_hood.find do |cafe|
-        cafe.how_good_are_my_psls >= rating_min
-      end # .display
+      current_user.shops_in_da_hood.select do |cafe|
+        cafe.how_good_are_my_psls.to_f >= rating_min
+      end.sample # .display
     when choices[2]
       current_user.shops_in_da_hood.select do |cafe|
-        cafe.price_point == "$" && cafe.how_good_are_my_psls >= 3.0
+        cafe.price_point == "$" && cafe.how_good_are_my_psls.to_f >= 3.0
       end.sample # .display
     when choices[3]
       current_user.shops_in_da_hood.select do |cafe|
@@ -87,6 +87,8 @@ class Cli
 
   def display(users_name)
     #order
+    current_user = User.find_by(username: users_name)
+
 
   end
 
