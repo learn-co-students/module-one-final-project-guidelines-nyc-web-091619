@@ -7,7 +7,7 @@ class Psl < ActiveRecord::Base
 
     espresso_addition = self.shots > 1 ? ((coffee_shop.cost_per_size * 3) * self.shots) : 0
 
-    cost_size + espresso_addition
+    (cost_size + espresso_addition).round(2)
   end
 
   def rate(num)
