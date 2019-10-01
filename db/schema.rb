@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_205652) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "psl", force: :cascade do |t|
+  create_table "psls", force: :cascade do |t|
     t.integer "coffee_shop_id"
     t.integer "user_id"
     t.string "dairy_opt"
