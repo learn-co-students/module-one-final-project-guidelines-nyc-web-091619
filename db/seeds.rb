@@ -23,3 +23,33 @@ coffeehouse.each do |row|
 end
 
 
+#PSL data
+dairy = ["Oat Milk", "Soy Milk", "Half and Half", "Almond Milk"]
+sweetness = ["honey", "Agave", "Stevia", "Syrup", "Sugar in the Raw"]
+tf = [true, false]
+size = [12, 16, 20]
+
+1000.times do 
+  shop = CoffeeShop.all.sample.id
+  customer = User.all.sample.id
+  moo = dairy.sample
+  sugarsugar = sweetness.sample
+  bullzeye = (rand(4) + 1)
+  sml = size.sample
+
+  Psl.create(        
+    coffee_shop_id: shop,
+    user_id: customer,
+    dairy_opt: moo,
+    sweetener: sugarsugar,
+    sweetness: (rand(5) + 1)
+    iced?: tf.sample,
+    whip?: tf.sample,
+    shots: bullzeye,
+    size: sml,
+    paid?: true
+  )
+
+end
+
+
