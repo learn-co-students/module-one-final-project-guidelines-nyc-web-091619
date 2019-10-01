@@ -9,23 +9,28 @@ end
 
 greet
 
-# enter_name = prompt.ask("Please enter your first name:", default: ENV['USER']) do |q|
-#   q.required true
-#   q.validate /\A\w+\Z/
-#   q.modify :capitalize
-# end
+name = prompt.ask("Please enter your name to get started:", required: true)
+
+new_traveller = Traveller.create(name: name)
 
 
-prompt.ask("Please enter your first name:", required: true)
+prompt.select("Please select from the following:") do |option| 
+  option.enum '.'
+  option.choice 'View all of your future destinations!'
+  option.choice 'View all of your current destinations'
+  option.choice 'Change your dates'
+  option.choice 'Cancel destinations'
+end
 
 
-# find Travellers.all.find
-# if not find
 
 
-prompt.yes?("We're sorry, we could not find your account. Would you like to create one? (Y/N)")
+prompt.multi_select("Please choose your destination", %w(
+Brekkemouth,Greece
+Ethanstad,Mauritania
+Gutkowskiburgh,Mongolia
+Senaberg,Liberia
+Schusterborough,Samoa
+))
 
-#view items
 
-prompt.select
-("Please choose your destination")

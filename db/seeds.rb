@@ -1,6 +1,6 @@
 require 'faker'
 
-Destination.destroy_all
+# Destination.destroy_all
 
 address = Faker::Address.city
 country = Faker::Address.country
@@ -11,4 +11,9 @@ country = Faker::Address.country
     country: Faker::Address.country
   )
 end
+
+
+# traveller1 = Traveller.create(
+#   name: "Michelle"
+# )
 

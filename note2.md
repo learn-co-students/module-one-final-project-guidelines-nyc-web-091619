@@ -1,15 +1,10 @@
 Prints 'Welcome to the Bucket List!" -ok
 Prints 'Please enter your name:" -ok
-User inputs name
-    -should be capitalized
+User inputs name -ok
+    -creates new traveller -ok
 
     
-Checks/finds name in name database
-If name does not exist,
-    -Print/Ask user if they want to create a new account
-        -if yes, create new account
-        -else, end program
-Once account is created/logged in give a user a choice to pick from
+Once account is created give a user a choice to pick from -ok
     -View all my items in my bucket list
     -View list of all prepopulated destinations
         -Add them to their bucket list
