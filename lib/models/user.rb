@@ -14,9 +14,9 @@ class User < ActiveRecord::Base
 
   def affordable
     max_price_per_oz = self.wallet / (self.psl_quota * 12)
-    affordable_shop = shops_in_da_hood.find do |shop|
+    affordable_shop = shops_in_da_hood.select do |shop|
       shop.cost_per_size < max_price_per_oz
-    end
+    end.sample
 
     affordable_shop.nil? ? "You'll never reach your quota if you don't deposit some funds" : affordable_shop
 
