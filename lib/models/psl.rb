@@ -9,4 +9,8 @@ class Psl < ActiveRecord::Base
 
     cost_size + espresso_addition
   end
+
+  def rate(num)
+    self.rating = num
+  end
 end
