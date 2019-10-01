@@ -42,7 +42,7 @@ size = [12, 16, 20]
     user_id: customer,
     dairy_opt: moo,
     sweetener: sugarsugar,
-    sweetness: (rand(5) + 1)
+    sweetness: (rand(5) + 1),
     iced?: tf.sample,
     whip?: tf.sample,
     shots: bullzeye,
