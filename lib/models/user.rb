@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def couple_of_nearby_shops
+    shops_in_da_hood.first(10)
+  end
+
   def affordable
     max_price_per_oz = self.wallet / (self.psl_quota * 12)
     affordable_shop = shops_in_da_hood.find do |shop|
@@ -17,4 +21,5 @@ class User < ActiveRecord::Base
     affordable_shop.nil? ? "You'll never reach your quota if you don't deposit some funds" : affordable_shop
 
   end
+
 end
