@@ -10,6 +10,7 @@ class CreatePslTable < ActiveRecord::Migration[5.2]
       t.boolean :whip?
       t.integer :shots
       t.integer :size
+      t.boolean :paid?
       t.timestamps
     end
   end
