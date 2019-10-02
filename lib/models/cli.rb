@@ -96,11 +96,7 @@ class Cli
     end
   end
 
-  def display(users_name=nil)
-    #order
-    current_user = User.find_by(username: users_name)
-    # when users_name.nil? blank out ordering options
-  end
+  
 
   # BROWSE NEEDS TESTING
   def browse(users_name=nil)
