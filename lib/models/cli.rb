@@ -12,7 +12,7 @@ class Cli
     when prompts[1]
       Cli.new.create_user
     when prompts[2]
-      # Cli.new.browse
+      Cli.new.browse
     when prompts[3]
       "Goodbye"
       exit
@@ -92,8 +92,46 @@ class Cli
 
   end
 
+  def display_no_order
+    # Copy of above without any ordering methods.
+  end
+
+  # BROWSE NEEDS TESTING
   def browse(users_name=nil)
     system "clear"
+    prompt = TTY::Prompt.new
+    choices = ["Find a PSL!", "Best PSLs by boro", "Cult classics"]
+
+    choice = prompt.select("What're you looking for?", choices)
+
+    case choice
+    when choices[0]
+      # Find a certain coffee shop by critera
+      location = prompt.select("Where do you want to enjoy your PSL?", ["Queens", "Bronx", "Manhattan", "Brooklyn", "Staten Island"])
+      price = prompt.select("How much are you trying to spend on it?", ["$", "$$", "$$$", "Whatevs"])
+      (price == "Whatevs") ? (price = nil) : price
+      rating = prompt.slider("How good we talkin'?", min: 1, max: 4)
+
+      cafehaus = CoffeeShop.select do |cafe|
+        (cafe.location == location && (price.nil? ? true : cafe.price_point == price) && cafe.how_good_are_my_psls.to_f >= rating.to_f)
+      end.sample
+      
+      cafehaus.nil? ? "#{location} has got nothing for you." : "test" # cafehaus.display_no_order
+
+
+    when choices[1]
+      # Best coffee shops in your boro
+      location = prompt.select("Which boro?", ["Queens", "Bronx", "Manhattan", "Brooklyn", "Staten Island"])
+      CoffeeShop.all.select do |cafe|
+        (cafe.location == location && cafe.how_good_are_my_psls.to_f > 4.0)
+      end.first(10) # . display as a list?
+    when choices[2]
+      # Top ten cult classics by boro
+      # Display 10 "cult classics" per boro, side by side?
+      puts "testing this still"
+
+    end
+
 
   end
 end
