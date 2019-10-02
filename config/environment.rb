@@ -2,6 +2,7 @@ require 'bundler'
 require "sinatra/activerecord"
 require 'pry'
 require "tty-prompt"
+require "csv"
 
 
 Bundler.require

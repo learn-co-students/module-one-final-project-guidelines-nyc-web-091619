@@ -2,11 +2,10 @@
 class CliApp
   
     def run  
-        puts create_table
-        # welcome_prompt 
-        # set_current_user
-        # system "clear"
-        # list_of_options
+        welcome_prompt 
+        set_current_user
+        system "clear"
+        list_of_options
     end 
    
 
@@ -16,7 +15,8 @@ class CliApp
         puts "Welcome #{@current_user.name}!".center(30)
         user_input = prompt.select("How would you like to proceed", ["1. Find a restaurant's Cleanliness Grade", "2. Add a new favorite restaurant","3. Delete a restaurant from your list", "4. View Your Favorites List", "5. Where should I eat?" ,"6. Exit"])
         system "clear"
-        case user_input 
+        
+        case user_input
 
             when "1. Find a restaurant's Cleanliness Grade"
                 system "clear"
@@ -28,6 +28,7 @@ class CliApp
                 "2. Add a new favorite restaurant"
                 system "clear"
                 add_to_favorite_restaurant
+                binding.pry
                 return_to_main_menu
                
 
@@ -49,24 +50,34 @@ class CliApp
             
             when "6. Exit"
                 exit 
-        
             end 
 
     end 
 
+  
     def all_restaurant_names 
         restaurant_names = Restaurant.all.map do |restaurant|
             restaurant.name 
         end 
     end 
 
+
+    def return_random_restaurant
+        puts all_restaurant_names.sample
+      end 
+
     
-    def get_restaurant_grade
+    def get_restaurant_grade_location
         prompt = TTY::Prompt.new
         user_input = prompt.select("Please select the restaurant of your choice", all_restaurant_names)
         system "clear"
         puts Restaurant.find_by(name: user_input).grade
+        puts Restaurant.find_by(name: user_input).location
     end 
+
+    def find_restaurant_by_user_input (user)
+         Restaurant.find_by(name: user_input)
+    end
 
     
     def add_to_favorite_restaurant
@@ -91,10 +102,11 @@ class CliApp
         puts "Deleted!"
         
     end 
+    # def current_user_faves 
+    #     Favorite.find_by(user_id: @current_user.id)
+    # end 
 
-    def return_random_restaurant
-      puts all_restaurant_names.sample
-    end 
+    
         
 
     def current_user_faves

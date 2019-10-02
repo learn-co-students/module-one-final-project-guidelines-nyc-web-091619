@@ -12,8 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2019_09_30_201954) do
 
+  create_table "Final Project- Seed Data", id: false, force: :cascade do |t|
+    t.text "field1"
+    t.text "field2"
+    t.text "field3"
+  end
+
   create_table "favorites", force: :cascade do |t|
-    t.integer "rating"
     t.integer "user_id"
     t.integer "restaurant_id"
   end
