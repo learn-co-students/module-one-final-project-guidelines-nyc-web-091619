@@ -17,12 +17,12 @@ class Psl < ActiveRecord::Base
   # Class Methods
   ## Small/medium/large to be used in Cli#display methods for quick cost getting.
   def self.small(coffee_shop)
-    Psl.new(size: 12, coffee_shop: coffee_shop.id, shots: 1)
+    Psl.new(size: 12, coffee_shop_id: coffee_shop.id, shots: 1)
   end
   def self.medium(coffee_shop)
-    Psl.new(size: 16, coffee_shop: coffee_shop.id, shots: 1)
+    Psl.new(size: 16, coffee_shop_id: coffee_shop.id, shots: 1)
   end
   def self.large(coffee_shop)
-    Psl.new(size: 20, coffee_shop: coffee_shop.id, shots: 1)
+    Psl.new(size: 20, coffee_shop_id: coffee_shop.id, shots: 1)
   end
 end
