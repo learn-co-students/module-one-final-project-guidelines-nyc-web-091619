@@ -43,7 +43,7 @@ class Cli
     puts "Your username is #{username}, don't forget it!"
 
     User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake)
-
+    
     sleep 2
 
     portal(username)
@@ -53,7 +53,7 @@ class Cli
     current_user = User.find_by(username: users_name)
     unique_cafes = current_user.psls.map {|psl| psl.coffee_shop}.uniq.count
     prompt = TTY::Prompt.new
-    choices = ["Find an affordable option", "Find by rating", "Find a cult-classic", "Find a classic-bux", "Find a bistro"]
+    choices = ["Find an affordable option", "Find by rating", "Find a cult-classic", "Find a classic-bux", "Find a bistro", "Deposit funds"]
 
     # Screen text
     system "clear"
@@ -64,7 +64,11 @@ class Cli
 
     case choice
     when choices[0]
-      current_user.affordable #.display
+      if current_user.affordable == "You'll never reach your quota if you don't deposit some funds"
+        portal(current_user.username)
+      else
+        current_user.affordable #.display
+      end
     when choices[1]
       rating_min = prompt.slider("Minimum rating?", min:1, max:4).to_f
       current_user.shops_in_da_hood.select do |cafe|
@@ -82,6 +86,11 @@ class Cli
       current_user.shops_in_da_hood.select do |cafe|
         cafe.price_point == "$$$"
       end.sample # .display
+    when choices[5]
+      # Deposit funds
+      num = prompt.ask("How much would you like to deposit?").to_f
+      current_user.update(wallet: (current_user.wallet+num))
+      portal(current_user.username)
     end
   end
 
@@ -120,14 +129,20 @@ class Cli
     when choices[1]
       # Best coffee shops in your boro
       location = prompt.select("Which boro?", ["Queens", "Bronx", "Manhattan", "Brooklyn", "Staten Island"])
-      CoffeeShop.all.select do |cafe|
+      cafehauses = CoffeeShop.all.select do |cafe|
         (cafe.location == location && cafe.how_good_are_my_psls.to_f > 4.0)
-      end.first(10) # . display as a list?
+      end.sample(10)
+      cafehauses.each do |cafe|
+        unless cafe.how_good_are_my_psls == nil?
+          puts "#{cafe.name} in #{location} PSL's are rated #{cafe.how_good_are_my_psls}"
+        else
+          puts "#{cafe.name} is unrated, but we bet the PSLs are good. Be the first to try and rate!"
+        end
+      end
     when choices[2]
       # Top ten cult classics by boro
       # Display 10 "cult classics" per boro, side by side?
       puts "testing this still"
-
     end
   end
 end
