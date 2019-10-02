@@ -73,18 +73,21 @@ class CoffeeShop < ActiveRecord::Base
     shots = prompt.slider("How many espresso shots would you like?", min: 1, max: 4)
 
     # readback = "So you'd like a #{size}oz "
-    if prompt.yes?("Sound good?")
-      temp_psl = Psl.create( 
-        coffee_shop_id: self.id, 
-        user_id: current_user.id,
-        dairy_opt: dairy_option,
-        sweetener: sweetener,
-        sweetness: sweetness,
-        iced?: iced,
-        whip?: whip,
-        shots: shots,
-        paid?: true
-      )
+    temp_psl = Psl.new( 
+      coffee_shop_id: self.id, 
+      user_id: current_user.id,
+      size: size,
+      dairy_opt: dairy_option,
+      sweetener: sweetener,
+      sweetness: sweetness,
+      iced?: iced,
+      whip?: whip,
+      shots: shots,
+      paid?: false
+    )
+    if prompt.yes?("This will cost $#{temp_psl.cost}. Sound good?")
+      temp_psl.update(paid?: true)
+      temp_psl.save
       current_user.update(wallet: (current_user.wallet - temp_psl.cost))
     else
       Cli.new.splash
