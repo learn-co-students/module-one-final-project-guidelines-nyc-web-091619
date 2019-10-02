@@ -8,7 +8,6 @@ class Cli
     case input
     when prompts[0]
       Cli.new.sign_in
-      
     when prompts[1]
       Cli.new.create_user
     when prompts[2]
@@ -47,12 +46,10 @@ class Cli
 
     sleep 2
 
-    Cli.new.portal(username)
+    portal(username)
   end
 
   def portal(users_name)
-
-    # Logic
     current_user = User.find_by(username: users_name)
     unique_cafes = current_user.psls.map {|psl| psl.coffee_shop}.uniq.count
     prompt = TTY::Prompt.new
@@ -86,7 +83,6 @@ class Cli
         cafe.price_point == "$$$"
       end.sample # .display
     end
-    
   end
 
   def display(users_name)
@@ -97,7 +93,7 @@ class Cli
   end
 
   def display_no_order
-    # Copy of above without any ordering methods.
+    # Similar to above without any ordering methods.
   end
 
   # BROWSE NEEDS TESTING
@@ -105,7 +101,6 @@ class Cli
     system "clear"
     prompt = TTY::Prompt.new
     choices = ["Find a PSL!", "Best PSLs by boro", "Cult classics"]
-
     choice = prompt.select("What're you looking for?", choices)
 
     case choice
@@ -122,7 +117,6 @@ class Cli
       
       cafehaus.nil? ? "#{location} has got nothing for you." : "test" # cafehaus.display_no_order
 
-
     when choices[1]
       # Best coffee shops in your boro
       location = prompt.select("Which boro?", ["Queens", "Bronx", "Manhattan", "Brooklyn", "Staten Island"])
@@ -135,7 +129,5 @@ class Cli
       puts "testing this still"
 
     end
-
-
   end
 end
