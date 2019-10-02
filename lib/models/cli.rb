@@ -53,7 +53,7 @@ class Cli
     current_user = User.find_by(username: users_name)
     unique_cafes = current_user.psls.map {|psl| psl.coffee_shop}.uniq.count
     prompt = TTY::Prompt.new
-    choices = ["Find an affordable option", "Find by rating", "Find a cult-classic", "Find a classic-bux", "Find a bistro", "Deposit funds"]
+    choices = ["Find an affordable option", "Find by rating", "Find a cult-classic", "Find a classic-bux", "Find a bistro", "Browse", "Deposit funds"]
 
     # Screen text
     system "clear"
@@ -87,6 +87,8 @@ class Cli
         cafe.price_point == "$$$"
       end.sample # .display
     when choices[5]
+      browse(current_user.username)
+    when choices[6]
       # Deposit funds
       num = prompt.ask("How much would you like to deposit?").to_f
       current_user.update(wallet: (current_user.wallet+num))
@@ -94,7 +96,7 @@ class Cli
     end
   end
 
-  def display(users_name)
+  def display(users_name=nil)
     #order
     current_user = User.find_by(username: users_name)
 
@@ -102,14 +104,15 @@ class Cli
   end
 
   def display_no_order
-    # Similar to above without any ordering methods.
+    # Similar to above without any ordering methods? Maybe make it so if users_name.nil? it'll just blank out order options
   end
 
   # BROWSE NEEDS TESTING
   def browse(users_name=nil)
-    system "clear"
+    current_user = User.find_by(username: users_name)
     prompt = TTY::Prompt.new
     choices = ["Find a PSL!", "Best PSLs by boro", "Cult classics"]
+    system "clear"
     choice = prompt.select("What're you looking for?", choices)
 
     case choice

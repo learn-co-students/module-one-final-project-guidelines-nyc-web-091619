@@ -1,7 +1,7 @@
 class Psl < ActiveRecord::Base
   belongs_to :user
   belongs_to :coffee_shop
-
+  # Instance Methods
   def cost
     cost_size = coffee_shop.cost_per_size * self.size
 
@@ -12,5 +12,17 @@ class Psl < ActiveRecord::Base
 
   def rate(num)
     self.rating = num
+  end
+
+  # Class Methods
+  ## Small/medium/large to be used in Cli#display methods for quick cost getting.
+  def self.small(coffee_shop)
+    Psl.new(size: 12, coffee_shop: coffee_shop.id, shots: 1)
+  end
+  def self.medium(coffee_shop)
+    Psl.new(size: 16, coffee_shop: coffee_shop.id, shots: 1)
+  end
+  def self.large(coffee_shop)
+    Psl.new(size: 20, coffee_shop: coffee_shop.id, shots: 1)
   end
 end
