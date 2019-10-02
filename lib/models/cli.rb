@@ -44,6 +44,10 @@ class Cli
     puts "Your username is #{username}, don't forget it!"
 
     User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake)
+
+    sleep 2
+
+    Cli.new.portal(username)
   end
 
   def portal(users_name)
