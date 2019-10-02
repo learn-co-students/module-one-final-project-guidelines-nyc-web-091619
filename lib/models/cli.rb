@@ -99,12 +99,7 @@ class Cli
   def display(users_name=nil)
     #order
     current_user = User.find_by(username: users_name)
-
-
-  end
-
-  def display_no_order
-    # Similar to above without any ordering methods? Maybe make it so if users_name.nil? it'll just blank out order options
+    # when users_name.nil? blank out ordering options
   end
 
   # BROWSE NEEDS TESTING
@@ -127,7 +122,7 @@ class Cli
         (cafe.location == location && (price.nil? ? true : cafe.price_point == price) && cafe.how_good_are_my_psls.to_f >= rating.to_f)
       end.sample
       
-      cafehaus.nil? ? "#{location} has got nothing for you." : "test" # cafehaus.display_no_order
+      cafehaus.nil? ? "#{location} has got nothing for you." : "test" # cafehaus.display
 
     when choices[1]
       # Best coffee shops in your boro
