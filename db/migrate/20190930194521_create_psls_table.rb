@@ -1,0 +1,17 @@
+class CreatePslsTable < ActiveRecord::Migration[5.2]
+  def change
+    create_table :psls do |t|
+      t.integer :coffee_shop_id
+      t.integer :user_id
+      t.string :dairy_opt
+      t.string :sweetener
+      t.integer :sweetness
+      t.boolean :iced?
+      t.boolean :whip?
+      t.integer :shots
+      t.integer :size
+      t.boolean :paid?
+      t.timestamps
+    end
+  end
+end
