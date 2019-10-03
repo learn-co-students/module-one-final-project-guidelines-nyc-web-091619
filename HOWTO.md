@@ -61,6 +61,16 @@ Database of Coffee Shops can be viewed by the following methods:
 
 * Users can delete their accounts through Cli#portal
 
+## The magic of seeding
+
+* Coffee Shop model was populated and tested using CSV data from the data.cityofnewyork.us/api, specifically [DOHMH New York City Restaurant Inspection Results](https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j), and a generic query for 'coffee' within type/name of institution.
+
+* User model was populated using the `faker` gem
+
+* PSL model was populated using random values
+
+Check out ./db/seeds.rb for more info!
+
 ## Created by
 
 Turcan Cicek and Erica Basak
