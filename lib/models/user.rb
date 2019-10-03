@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
       shop.cost_per_size < max_price_per_oz
     end.sample
 
-    affordable_shop.nil? ? "You'll never reach your quota if you don't deposit some funds" : affordable_shop
+    affordable_shop.nil? ? 'returns nil' : affordable_shop
 
   end
 
