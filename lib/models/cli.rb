@@ -21,7 +21,8 @@ class Cli
     when prompts[2]
       Cli.new.browse
     when prompts[3]
-      "Goodbye"
+      puts "Peace, and stay basic!"
+      sleep 2
       exit
     end
   end
@@ -77,7 +78,9 @@ class Cli
 
     case choice
     when choices[0]
-      if current_user.affordable == "You'll never reach your quota if you don't deposit some funds"
+      if current_user.affordable == 'returns nil'
+        puts "You'll never reach your caffeine quota without cashmoney!"
+        sleep 2
         portal(username)
       else
         current_user.affordable.display(username)
