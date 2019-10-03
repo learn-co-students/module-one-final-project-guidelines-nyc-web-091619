@@ -7,9 +7,9 @@ class Cli
     prompts = ["Sign in", "Create User", "Browse Coffee Shops", "Exit"]
     puts colors.yellow(font.write("b     It's"))
     puts colors.yellow(font.write("a     Pumpkin"))
-    puts colors.yellow(font.write("s     Spice"))
-    puts colors.yellow(font.write("i     Latte"))
-    puts colors.yellow(font.write("c     Season"))
+    puts colors.yellow(font.write("s      Spice"))
+    puts colors.yellow(font.write("i       Latte"))
+    puts colors.yellow(font.write("c      Season"))
 
     # puts colors.yellow(font.write("It's pumkpin "))
     # print colors.red(font.write("basic"))
@@ -33,10 +33,10 @@ class Cli
   def sign_in
     # system "clear"
     prompt = TTY::Prompt.new
-    users_name = prompt.ask("What's your username?")
-    if User.find_by(username: users_name)
+    username = prompt.ask("What's your username?")
+    if User.find_by(username: username)
       "you exist"
-      portal(users_name) # User.find_by(username:users_name).portal
+      portal(username) # User.find_by(username:username).portal
     else
       prompt.yes?("You're not in our database! \nCheck your spelling, and try again?") ? sign_in : splash
     end
@@ -63,52 +63,54 @@ class Cli
     portal(username)
   end
 
-  def portal(users_name)
-    current_user = User.find_by(username: users_name)
-    unique_cafes = current_user.psls.map {|psl| psl.coffee_shop}.uniq.count # This could be refactored to .coffee_shops.uniq.count
+  def portal(username)
+    current_user = User.find_by(username: username)
+    unique_cafes = current_user.coffee_shops.uniq.count
     prompt = TTY::Prompt.new
-    choices = ["Find an affordable option", "Find by rating", "Find a cult-classic", "Find a classic-bux", "Find a bistro", "Browse", "Deposit funds", "Exit", "DELETE"]
+    font = TTY::Font.new(:straight)
+    colors = Pastel.new
+    choices = ["Find an affordable option", "Find by rating", "Find a cult-classic", "Find a classic-bux", "Find a bistro", "Browse", "Deposit funds", "Log Out", "DELETE"]
 
     # Screen text
     system "clear"
+    puts colors.magenta(font.write("most basic portal"))
     puts "Hi, #{current_user.name}!"
-    puts "You've got $#{current_user.wallet} in your PSL wallet"
+    puts "You've got $#{current_user.wallet.round(2)} in your PSL wallet"
     puts "You've visited #{unique_cafes} unique cafes!"
     choice = prompt.select("Where would you like to go next?", choices)
 
     case choice
     when choices[0]
       if current_user.affordable == "You'll never reach your quota if you don't deposit some funds"
-        portal(current_user.username)
+        portal(username)
       else
-        current_user.affordable.display(current_user.username)
+        current_user.affordable.display(username)
       end
     when choices[1] 
       rating_min = prompt.slider("Minimum rating?", min:1, max:4).to_f
       current_user.shops_in_da_hood.select do |cafe|
         cafe.how_good_are_my_psls.to_f >= rating_min
-      end.sample.display(current_user.username)
+      end.sample.display(username)
     when choices[2]
       current_user.shops_in_da_hood.select do |cafe|
         cafe.price_point == "$" && cafe.how_good_are_my_psls.to_f >= 3.0
-      end.sample.display(current_user.username)
+      end.sample.display(username)
     when choices[3]
       current_user.shops_in_da_hood.select do |cafe|
         cafe.name.downcase.include?("starbuck")
-      end.sample.display(current_user.username)
+      end.sample.display(username)
     when choices[4]
       current_user.shops_in_da_hood.select do |cafe|
         cafe.price_point == "$$$"
-      end.sample.display(current_user.username)
+      end.sample.display(username)
     when choices[5]
-      browse(current_user.username)
+      browse(username)
     when choices[6]
-      # Deposit funds
       num = prompt.ask("How much would you like to deposit?").to_f
       current_user.update(wallet: (current_user.wallet+num))
-      portal(current_user.username)
+      portal(username)
     when choices[7]
-      exit
+      splash
     when choices[8]
       prompt.warn("This is serious, it will remove your account from the PSL database permanently.")
       if prompt.yes?("Are you sure about this?")
@@ -120,14 +122,14 @@ class Cli
           Cli.new.splash
         end
       end
-      portal(users_name) # current_user.portal
+      portal(username) # current_user.portal
     end
   end
 
-  def browse(users_name=nil)
-    current_user = User.find_by(username: users_name)
+  def browse(username=nil)
+    current_user = User.find_by(username: username)
     prompt = TTY::Prompt.new
-    choices = ["Find a PSL!", "Best PSLs by boro", {name: "Cult classics", disabled: "stretch"}]
+    choices = ["Find a PSL!", "Best PSLs by boro", {name: "Cult classics", disabled: "<<-stretch->>"}, "Back"]
     system "clear"
     choice = prompt.select("What're you looking for?", choices)
 
@@ -143,7 +145,7 @@ class Cli
         (cafe.location == location && (price.nil? ? true : cafe.price_point == price) && cafe.how_good_are_my_psls.to_f >= rating.to_f)
       end.sample
       
-      cafehaus.nil? ? "#{location} has got nothing for you." : cafehaus.display(users_name)
+      cafehaus.nil? ? "#{location} has got nothing for you." : cafehaus.display(username)
 
     when choices[1]
       # Best coffee shops in your boro
@@ -162,32 +164,35 @@ class Cli
       selection = prompt.select("Here are the ten best coffee shops in your boro:", cafe_list)
       case selection
       when cafe_list[0]
-        cafehauses[0].display(users_name)
+        cafehauses[0].display(username)
       when cafe_list[1]
-        cafehauses[1].display(users_name)
+        cafehauses[1].display(username)
       when cafe_list[2]
-        cafehauses[2].display(users_name)
+        cafehauses[2].display(username)
       when cafe_list[3]
-        cafehauses[3].display(users_name)
+        cafehauses[3].display(username)
       when cafe_list[4]
-        cafehauses[4].display(users_name)
+        cafehauses[4].display(username)
       when cafe_list[5]
-        cafehauses[5].display(users_name)
+        cafehauses[5].display(username)
       when cafe_list[6]
-        cafehauses[6].display(users_name)
+        cafehauses[6].display(username)
       when cafe_list[7]
-        cafehauses[7].display(users_name)
+        cafehauses[7].display(username)
       when cafe_list[8]
-        cafehauses[8].display(users_name)
+        cafehauses[8].display(username)
       when cafe_list[9]
-        cafehauses[9].display(users_name)
+        cafehauses[9].display(username)
       end
 
     when choices[2]
       # Top ten cult classics by boro
       # Display 10 "cult classics" per boro, side by side?
       puts "testing this still"
+    when choices[3]
+      splash
     end
+    
   end
 end
 
