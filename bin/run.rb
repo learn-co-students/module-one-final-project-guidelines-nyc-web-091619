@@ -1,5 +1,7 @@
 require_relative '../config/environment'
 
+Cli.new.splash
 
 
-puts "HELLO WORLD"
+
+puts "GOODBYE, BASIC WORLD"

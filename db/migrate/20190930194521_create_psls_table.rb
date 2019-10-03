@@ -1,6 +1,6 @@
-class CreatePslTable < ActiveRecord::Migration[5.2]
+class CreatePslsTable < ActiveRecord::Migration[5.2]
   def change
-    create_table :psl do |t|
+    create_table :psls do |t|
       t.integer :coffee_shop_id
       t.integer :user_id
       t.string :dairy_opt
