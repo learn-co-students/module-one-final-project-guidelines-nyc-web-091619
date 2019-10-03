@@ -64,104 +64,17 @@ class CoffeeShop < ActiveRecord::Base
       sleep 5
     end
 
-    ## End of display
-
-    # ## Start of #order
-    # choices = [{name: "small"}, {name: "medium"}, {name: "large"}, {name: "exit"}]
-    # if username.nil?
-    #   choices = choices.map do |choice|
-    #     if choice[:name] == "exit" 
-    #       choice[:name] = "exit"
-    #     else
-    #       choice.merge({disabled: "account required"})
-    #     end
-    #   end
-    # else
-    #   current_user = User.find_by(username: username)
-    # end
-    # prompt = TTY::Prompt.new
-    # size = prompt.select("What would you like to order?", choices)
-    # case size
-    # when choices[0].values[0]
-    #   size = 12
-    # when choices[1].values[0]
-    #   size = 16
-    # when choices[2].values[0]
-    #   size = 20
-    # when choices[3].values[0]
-    #   exit
-    # end
-    # #dairy option
-    # dairy_option = prompt.select("What type of milk would you like?", ["Oat Milk", "Soy Milk", "Half and Half", "Almond Milk", "Beef Milk"])
-
-    # sweetener = prompt.select("What type of sweetener would you like?", ["Honey", "Agave", "Stevia", "Syrup", "Sugar in the Raw"])
-    # sweetness = prompt.slider("How sweet would you like your PSL?", min: 1, max: 5)
-    # iced = prompt.yes?("Would you like your PSL iced?")
-    # whip = prompt.yes?("Would you like whip cream on your PSL?")
-    # shot_choice = prompt.slider("How many espresso shots would you like?", min: 1, max: 4)
-
-    # # readback = "So you'd like a #{size}oz "
-    # temp_psl = Psl.new( 
-    #   coffee_shop_id: self.id, 
-    #   user_id: current_user.id,
-    #   size: size,
-    #   dairy_opt: dairy_option,
-    #   sweetener: sweetener,
-    #   sweetness: sweetness,
-    #   iced?: iced,
-    #   whip?: whip,
-    #   shots: shot_choice,
-    #   paid?: false
-    # )
-    # if prompt.yes?("This will cost $#{temp_psl.cost}. Sound good?")
-    #   temp_psl.update(paid?: true)
-    #   temp_psl.save
-    #   current_user.update(wallet: (current_user.wallet - temp_psl.cost))
-    # else
-    #   Cli.new.splash
-    # end
-
-    # ## End of #order
-
-    # ## start of post_pay_rate
-    
-    # ### Stretch -- put a spinner and sleep timer for waiting for your coffee
-    # rating = prompt.slider("Please rate your coffee!", min:1, max:5)
-    # temp_psl.update(rating: rating)
-    # if rating == 1
-    #   if prompt.yes?("So sorry to hear you didn't enjoy your coffee, would you like a refund?") && temp_psl.paid?
-    #     temp_psl.update(paid?: false)
-    #     current_user.update(wallet: (current_user.wallet + temp_psl.cost))
-    #     puts "Hope it's better next time!"
-    #     sleep 5
-    #     Cli.new.portal(current_user.username)
-    #   else
-    #     Cli.new.portal(current_user.username)
-    #   end
-    # else
-    #   puts "Thanks for rating!"
-    #   puts "We hope you enjoyed your coffee!"
-    #   sleep 5
-    #   Cli.new.portal(current_user.username)
-    # end
-    # ## end of post_pay_rate
+   
   end
 
   def order(username)
     choices = [{name: "small", value: 12}, {name: "medium", value: 16}, {name: "large", value: 20}, {name: "back"}]
-    # if username.nil?
-    #   choices = choices.map do |choice|
-    #     if choice[:name] == "exit" 
-    #       choice[:name] = "exit"
-    #     else
-    #       choice.merge({disabled: "account required"})
-    #     end
-    #   end
-    # else
-    # end
+
     current_user = User.find_by(username: username)
     prompt = TTY::Prompt.new
+
     size = prompt.select("What would you like to order?", choices)
+
     if size.class != Integer
       display(username)
     end
@@ -178,7 +91,6 @@ class CoffeeShop < ActiveRecord::Base
     
     shot_choice = prompt.slider("How many espresso shots would you like?", min: 1, max: 4)
 
-    # readback = "So you'd like a #{size}oz "
     temp_psl = Psl.new( 
       coffee_shop_id: self.id, 
       user_id: current_user.id,
