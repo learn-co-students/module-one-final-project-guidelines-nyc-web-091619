@@ -33,7 +33,8 @@ class CoffeeShop < ActiveRecord::Base
     readable_name = self.name.split.map{|word| word.capitalize}.join(" ")
     psl_rating = self.how_good_are_my_psls
     puts "Welcome to #{readable_name}." 
-    puts "Our psls are rated #{psl_rating}, and we've sold #{self.psls.count}."
+    puts "Our Pumpkin Spice Lattes are rated #{psl_rating}, and we've sold #{self.psls.count}."
+    puts "_.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._"
     puts "Our small PSL costs $#{Psl.small(self).cost}"
     puts "Our medium PSL costs $#{Psl.medium(self).cost}"
     puts "Our large PSL costs $#{Psl.large(self).cost}"
@@ -61,7 +62,6 @@ class CoffeeShop < ActiveRecord::Base
     when choices[3].values[0]
       exit
     end
-    binding.pry
     #dairy option
     dairy_option = prompt.select("What type of milk would you like?", ["Oat Milk", "Soy Milk", "Half and Half", "Almond Milk", "Beef Milk"])
 
@@ -99,7 +99,7 @@ class CoffeeShop < ActiveRecord::Base
       if prompt.yes?("So sorry to hear you didn't enjoy your coffee, would you like a refund?") && temp_psl.paid?
         temp_psl.update(paid?: false)
         current_user.update(wallet: (current_user.wallet + temp_psl.cost))
-        "Hope it's better next time!"
+        puts "Hope it's better next time!"
         sleep 5
         Cli.new.portal(current_user.username)
       else
