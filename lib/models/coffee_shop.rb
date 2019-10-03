@@ -33,15 +33,15 @@ class CoffeeShop < ActiveRecord::Base
     readable_name = self.name.split.map{|word| word.capitalize}.join(" ")
     psl_rating = self.how_good_are_my_psls
     puts "Welcome to #{readable_name}." 
-    puts "Our psls are rated by #{psl_rating}."
+    puts "Our psls are rated #{psl_rating}, and we've sold #{self.psls.count}."
     puts "Our small PSL costs $#{Psl.small(self).cost}"
     puts "Our medium PSL costs $#{Psl.medium(self).cost}"
     puts "Our large PSL costs $#{Psl.large(self).cost}"
-    choices = [{name: "small"}, {name: "medium"}, {name: "large"}, {name: "back"}]
+    choices = [{name: "small"}, {name: "medium"}, {name: "large"}, {name: "exit"}]
     if users_name.nil?
       choices = choices.map do |choice|
-        if choice[:name] == "back" 
-          choice[:name] = "back"
+        if choice[:name] == "exit" 
+          choice[:name] = "exit"
         else
           choice.merge({disabled: "account required"})
         end
@@ -49,20 +49,19 @@ class CoffeeShop < ActiveRecord::Base
     else
       current_user = User.find_by(username: users_name)
     end
-    binding.pry
     prompt = TTY::Prompt.new
     size = prompt.select("What would you like to order?", choices)
     case size
-    when choices[0]
-      12
-    when choices[1]
-      16
-    when choices[2]
-      20
-    when choices[3]
-      Cli.new.splash
+    when choices[0].values[0]
+      size = 12
+    when choices[1].values[0]
+      size = 16
+    when choices[2].values[0]
+      size = 20
+    when choices[3].values[0]
+      exit
     end
-
+    binding.pry
     #dairy option
     dairy_option = prompt.select("What type of milk would you like?", ["Oat Milk", "Soy Milk", "Half and Half", "Almond Milk", "Beef Milk"])
 
@@ -70,7 +69,7 @@ class CoffeeShop < ActiveRecord::Base
     sweetness = prompt.slider("How sweet would you like your PSL?", min: 1, max: 5)
     iced = prompt.yes?("Would you like your PSL iced?")
     whip = prompt.yes?("Would you like whip cream on your PSL?")
-    shots = prompt.slider("How many espresso shots would you like?", min: 1, max: 4)
+    shot_choice = prompt.slider("How many espresso shots would you like?", min: 1, max: 4)
 
     # readback = "So you'd like a #{size}oz "
     temp_psl = Psl.new( 
@@ -82,7 +81,7 @@ class CoffeeShop < ActiveRecord::Base
       sweetness: sweetness,
       iced?: iced,
       whip?: whip,
-      shots: shots,
+      shots: shot_choice,
       paid?: false
     )
     if prompt.yes?("This will cost $#{temp_psl.cost}. Sound good?")
@@ -101,6 +100,8 @@ class CoffeeShop < ActiveRecord::Base
         temp_psl.update(paid?: false)
         current_user.update(wallet: (current_user.wallet + temp_psl.cost))
         "Hope it's better next time!"
+        sleep 5
+        Cli.new.portal(current_user.username)
       else
         Cli.new.portal(current_user.username)
       end

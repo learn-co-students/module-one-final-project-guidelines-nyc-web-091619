@@ -1,11 +1,11 @@
 require 'csv'
-require "faker"
+require 'faker'
 
 #User Data
 boros = ["Queens", "Bronx", "Manhattan", "Brooklyn", "Staten Island"]
 100.times do
   name = Faker::Name.unique.name
-  username = name.sub(" ","")
+  username = name.gsub(" ","")
   boro = boros.sample
   dollaz = (rand * (20 - 5) + 5).round(2)
   caffeine_intake = (rand(5) + 1)
@@ -29,7 +29,7 @@ sweetness = ["honey", "Agave", "Stevia", "Syrup", "Sugar in the Raw"]
 tf = [true, false]
 size = [12, 16, 20]
 
-1000.times do 
+10000.times do 
   shop = CoffeeShop.all.sample.id
   customer = User.all.sample.id
   moo = dairy.sample
