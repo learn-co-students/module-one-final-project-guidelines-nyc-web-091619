@@ -42,8 +42,8 @@ class CoffeeShop < ActiveRecord::Base
     
     ## Display Text
     system 'clear'
-    puts colors.red(font.write("COFFEE SHOP"))
-    puts "Welcome to #{readable_name}." 
+    puts colors.red(font.write("#{readable_name}"))
+    puts "Welcome to #{readable_name}, in the boro of #{self.location}." 
     puts "Our Pumpkin Spice Lattes are rated #{psl_rating}, and we've sold #{self.psls.count}."
     puts "_.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._"
     puts "Our small PSL costs $#{Psl.small(self).cost}"
@@ -148,7 +148,7 @@ class CoffeeShop < ActiveRecord::Base
   end
 
   def order(username)
-    choices = [{name: "small"}, {name: "medium"}, {name: "large"}, {name: "exit"}]
+    choices = [{name: "small", value: 12}, {name: "medium", value: 16}, {name: "large", value: 20}, {name: "back"}]
     # if username.nil?
     #   choices = choices.map do |choice|
     #     if choice[:name] == "exit" 
@@ -162,15 +162,8 @@ class CoffeeShop < ActiveRecord::Base
     current_user = User.find_by(username: username)
     prompt = TTY::Prompt.new
     size = prompt.select("What would you like to order?", choices)
-    case size
-    when choices[0].values[0]
-      size = 12
-    when choices[1].values[0]
-      size = 16
-    when choices[2].values[0]
-      size = 20
-    when choices[3].values[0]
-      exit
+    if size.class != Integer
+      display(username)
     end
 
     dairy_option = prompt.select("What type of milk would you like?", ["Oat Milk", "Soy Milk", "Half and Half", "Almond Milk", "Beef Milk"])
@@ -198,20 +191,34 @@ class CoffeeShop < ActiveRecord::Base
       shots: shot_choice,
       paid?: false
     )
-    if prompt.yes?("This will cost $#{temp_psl.cost}. Sound good?")
+    condition_cost = prompt.yes?("This will cost $#{temp_psl.cost}. Sound good?")
+    if condition_cost && (current_user.wallet >= temp_psl.cost)
       temp_psl.update(paid?: true)
       temp_psl.save
       current_user.update(wallet: (current_user.wallet - temp_psl.cost))
       post_pay_rate(username, temp_psl)
+    elsif condition_cost && (current_user.wallet < temp_psl.cost)
+      puts "You can't afford this!"
+      puts "Go deposit some more money in your portal"
+      puts "Sending you back to the portal ..."
+      sleep 2
+      Cli.new.portal(username)
     else
-      puts "Sending you back to the coffee shop..."
+      puts "Sending you back to the coffee shop ..."
       sleep 2
       display(username)
     end
   end
 
   def post_pay_rate(username, psl)
+    font = TTY::Font.new(:straight)
+    colors = Pastel.new
     prompt = TTY::Prompt.new
+    current_user = User.find_by(username: username)
+
+    system 'clear'
+    
+    puts colors.yellow.bold(font.write("Enjoy!"))
     rating = prompt.slider("Please rate your coffee!", min:1, max:5)
     temp_psl = psl
     temp_psl.update(rating: rating)

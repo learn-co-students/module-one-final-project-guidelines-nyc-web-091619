@@ -11,10 +11,6 @@ class Cli
     puts colors.yellow(font.write("i       Latte"))
     puts colors.yellow(font.write("c      Season"))
 
-    # puts colors.yellow(font.write("It's pumkpin "))
-    # print colors.red(font.write("basic"))
-    # print colors.yellow(font.write("               spice"))
-    # puts colors.yellow(font.write("season"))
     input = prompt.select("Get your PSL on! \nPlease select from the following menu options:", prompts )
 
     case input
@@ -42,7 +38,7 @@ class Cli
     end
   end
 
-  def create_user
+  def create_user # Needs to validate against database
     system "clear"
     font = TTY::Font.new(:straight)
     colors = Pastel.new
@@ -56,7 +52,7 @@ class Cli
     puts "Thanks for using our app! Here's $5 to get you started!"
     puts "Your username is #{username}, don't forget it!"
 
-    User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake).#portal
+    User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake)#portal
     
     sleep 5
 
@@ -117,7 +113,7 @@ class Cli
         prompt.error("Continuing will DELETE your account.")
         if prompt.yes?("Delete account?")
           current_user.delete
-          prompt.ok("Successfully delete your account, stay basic!")
+          prompt.ok("Successfully deleted your account, stay basic!")
           sleep 5
           Cli.new.splash
         end
@@ -129,8 +125,11 @@ class Cli
   def browse(username=nil)
     current_user = User.find_by(username: username)
     prompt = TTY::Prompt.new
+    font = TTY::Font.new(:straight)
+    colors = Pastel.new
     choices = ["Find a PSL!", "Best PSLs by boro", {name: "Cult classics", disabled: "<<-stretch->>"}, "Back"]
     system "clear"
+    puts colors.magenta.bold(font.write("PSL Browser"))
     choice = prompt.select("What're you looking for?", choices)
 
     case choice
@@ -153,38 +152,24 @@ class Cli
       cafehauses = CoffeeShop.all.select do |cafe|
         (cafe.location == location && cafe.how_good_are_my_psls.to_f > 4.0)
       end.sample(10)
+      # cafe_hash = {}
       cafe_list = []
       cafehauses.each do |cafe|
+        cafe_hash = {}
         unless cafe.how_good_are_my_psls == nil?
-          cafe_list << "#{cafe.name} in #{location} PSL's are rated #{cafe.how_good_are_my_psls}"
+          cafe_hash[:value] = cafe
+          cafe_hash[:name] = "#{cafe.name} in #{location} PSL's are rated #{cafe.how_good_are_my_psls}"
+          cafe_list << cafe_hash
         else
-          cafe_list << "#{cafe.name} is unrated, but we bet the PSLs are good. Be the first to try and rate!"
+          cafe_hash[:value] = cafe
+          cafe_hash[:name] = "#{cafe.name} is unrated, but we bet the PSLs are good. Be the first to try and rate!"
+          cafe_list << cafe_hash
         end
       end
+      binding.pry
       selection = prompt.select("Here are the ten best coffee shops in your boro:", cafe_list)
-      case selection
-      when cafe_list[0]
-        cafehauses[0].display(username)
-      when cafe_list[1]
-        cafehauses[1].display(username)
-      when cafe_list[2]
-        cafehauses[2].display(username)
-      when cafe_list[3]
-        cafehauses[3].display(username)
-      when cafe_list[4]
-        cafehauses[4].display(username)
-      when cafe_list[5]
-        cafehauses[5].display(username)
-      when cafe_list[6]
-        cafehauses[6].display(username)
-      when cafe_list[7]
-        cafehauses[7].display(username)
-      when cafe_list[8]
-        cafehauses[8].display(username)
-      when cafe_list[9]
-        cafehauses[9].display(username)
-      end
-
+      selection.display(username)
+      
     when choices[2]
       # Top ten cult classics by boro
       # Display 10 "cult classics" per boro, side by side?
