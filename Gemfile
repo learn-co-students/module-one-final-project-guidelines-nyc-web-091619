@@ -14,4 +14,5 @@ gem "pry" # Debug tool
 gem "faker", "~> 2.5.0" # Used to generate seed-data
 
 # Prettifiers
-gem "tty-prompt" # Used for UI
+gem "tty-prompt"  # Used for UI
+gem "tty-font"    # Used for block letters

@@ -1,8 +1,20 @@
 class Cli
   def splash
     system "clear"
+    font = TTY::Font.new(:straight)
     prompt = TTY::Prompt.new
+    colors = Pastel.new
     prompts = ["Sign in", "Create User", "Browse Coffee Shops", "Exit"]
+    puts colors.yellow(font.write("b     It's"))
+    puts colors.yellow(font.write("a     Pumpkin"))
+    puts colors.yellow(font.write("s     Spice"))
+    puts colors.yellow(font.write("i     Latte"))
+    puts colors.yellow(font.write("c     Season"))
+
+    # puts colors.yellow(font.write("It's pumkpin "))
+    # print colors.red(font.write("basic"))
+    # print colors.yellow(font.write("               spice"))
+    # puts colors.yellow(font.write("season"))
     input = prompt.select("Get your PSL on! \nPlease select from the following menu options:", prompts )
 
     case input
@@ -19,12 +31,12 @@ class Cli
   end
 
   def sign_in
-    system "clear"
+    # system "clear"
     prompt = TTY::Prompt.new
     users_name = prompt.ask("What's your username?")
     if User.find_by(username: users_name)
       "you exist"
-      portal(users_name)
+      portal(users_name) # User.find_by(username:users_name).portal
     else
       prompt.yes?("You're not in our database! \nCheck your spelling, and try again?") ? sign_in : splash
     end
@@ -32,8 +44,10 @@ class Cli
 
   def create_user
     system "clear"
+    font = TTY::Font.new(:straight)
+    colors = Pastel.new
     prompt = TTY::Prompt.new
-    # new_user = User.new
+    puts colors.yellow(font.write("Welcome to Basic!"))
     boro = prompt.select("Where do you live?", ["Queens", "Bronx", "Manhattan", "Brooklyn", "Staten Island"])
     caffeine_intake = prompt.slider("How many caffeinated drinks do you consume per day?", min:1, max:5)
     name = prompt.ask("What's your name?", required: true)
@@ -42,9 +56,9 @@ class Cli
     puts "Thanks for using our app! Here's $5 to get you started!"
     puts "Your username is #{username}, don't forget it!"
 
-    User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake)
+    User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake).#portal
     
-    sleep 2
+    sleep 5
 
     portal(username)
   end
@@ -69,7 +83,7 @@ class Cli
       else
         current_user.affordable.display(current_user.username)
       end
-    when choices[1]
+    when choices[1] 
       rating_min = prompt.slider("Minimum rating?", min:1, max:4).to_f
       current_user.shops_in_da_hood.select do |cafe|
         cafe.how_good_are_my_psls.to_f >= rating_min
@@ -106,13 +120,10 @@ class Cli
           Cli.new.splash
         end
       end
-      portal(users_name)
+      portal(users_name) # current_user.portal
     end
   end
 
-  
-
-  # BROWSE NEEDS TESTING
   def browse(users_name=nil)
     current_user = User.find_by(username: users_name)
     prompt = TTY::Prompt.new
@@ -179,3 +190,35 @@ class Cli
     end
   end
 end
+
+### Code I wish I had
+## Cli#Splash
+#
+#
+#
+#
+#
+#
+#
+## Cli#Sign_in
+#   Takes username
+#   Calls User#portal
+#
+#
+#
+## Cli#Create_account
+#   prompts name, caffeine intake, location
+#   creates new user
+#   Calls user#portal
+#
+#
+#
+#
+## Cli#Browse
+#   prompts location
+#
+#
+#
+#
+#
+#

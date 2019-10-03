@@ -23,7 +23,7 @@ class CoffeeShop < ActiveRecord::Base
       sum + rating
     end
     psl_rating_avg = (psl_rating_sum / psls_with_ratings.count) unless psl_rating_sum.nil?
-    psl_rating_avg.nil? ? "No ratings" : psl_rating_avg.round(1)
+    psl_rating_avg.nil? ? "\b\b\b\b\b\b\bn't rated by anyone" : psl_rating_avg.round(1)
   end
 
 
@@ -119,3 +119,25 @@ class CoffeeShop < ActiveRecord::Base
 end #end of class
 
 
+### The code I wish I had
+## CoffeeShop#Display
+#   carries in user from portal
+#   displays coffee shop prices and small display
+#   Provides option to order or exit
+#   Exit returns user to their portal
+#   Order leads to CoffeeShop#Order
+#
+## CoffeeShop#Order
+#   carries in user from #display
+#   goes through ordering list
+#   Reads the order back
+#   'Sound good?'(y/n)
+#   Y performs transaction, leads to CoffeeShop#post_pay_rate, N leads back to CoffeeShop#display
+#
+## CoffeeShop#post_pay_rate
+#   carries in user from #order
+#   allows the user to rate from 1-5
+#   if rating is 1, allows choice for a refund
+#   if yes, performs refund, sends back to portal
+#   if no, thanks for feedback, sends back to portal
+#   else takes rating, sends back to portal

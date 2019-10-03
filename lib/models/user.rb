@@ -23,3 +23,15 @@ class User < ActiveRecord::Base
   end
 
 end
+
+### Code I wish I had
+## User#Portal
+#   Move portal functionality into User class.
+#   portal should "log you out" and return you to splash.
+#   reserve exit functionality in splash
+#
+#
+#
+#
+#
+
