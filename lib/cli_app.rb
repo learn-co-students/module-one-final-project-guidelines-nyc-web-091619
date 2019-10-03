@@ -15,12 +15,12 @@ class CliApp
         puts "Welcome #{@current_user.name}!".center(30)
         user_input = prompt.select("How would you like to proceed", ["1. Find a restaurant's Cleanliness Grade", "2. Add a new favorite restaurant","3. Delete a restaurant from your list", "4. View Your Favorites List", "5. Where should I eat?" ,"6. Exit"])
         system "clear"
-        
+
         case user_input
 
             when "1. Find a restaurant's Cleanliness Grade"
                 system "clear"
-                get_restaurant_grade
+                get_restaurant_grade_location
                 return_to_main_menu 
                 
                
@@ -28,7 +28,6 @@ class CliApp
                 "2. Add a new favorite restaurant"
                 system "clear"
                 add_to_favorite_restaurant
-                binding.pry
                 return_to_main_menu
                
 
@@ -45,7 +44,7 @@ class CliApp
 
             when "5. Where should I eat?"
                 system "clear"
-                return_random_restaurant
+                Restaurant.return_random_restaurant
                 return_to_main_menu
             
             when "6. Exit"
@@ -55,21 +54,21 @@ class CliApp
     end 
 
   
-    def all_restaurant_names 
-        restaurant_names = Restaurant.all.map do |restaurant|
-            restaurant.name 
-        end 
-    end 
+    # def all_restaurant_names 
+    #     restaurant_names = Restaurant.all.map do |restaurant|
+    #         restaurant.name 
+    #     end 
+    # end 
 
 
-    def return_random_restaurant
-        puts all_restaurant_names.sample
-      end 
+    # def return_random_restaurant
+    #     puts all_restaurant_names.sample
+    #   end 
 
     
     def get_restaurant_grade_location
         prompt = TTY::Prompt.new
-        user_input = prompt.select("Please select the restaurant of your choice", all_restaurant_names)
+        user_input = prompt.select("Please select the restaurant of your choice", Restaurant.all_names)
         system "clear"
         puts Restaurant.find_by(name: user_input).grade
         puts Restaurant.find_by(name: user_input).location
@@ -82,7 +81,7 @@ class CliApp
     
     def add_to_favorite_restaurant
         prompt = TTY::Prompt.new
-        user_input = prompt.select("Please select the restaurant to add", all_restaurant_names)
+        user_input = prompt.select("Please select the restaurant to add", Restaurant.all_names)
         
         restaurant_id= Restaurant.find_by(name: user_input).id 
 
@@ -102,12 +101,7 @@ class CliApp
         puts "Deleted!"
         
     end 
-    # def current_user_faves 
-    #     Favorite.find_by(user_id: @current_user.id)
-    # end 
-
     
-        
 
     def current_user_faves
         @current_user.restaurants.map do |restaurant|
@@ -116,10 +110,11 @@ class CliApp
     end 
 
     def current_user_faves_to_list 
-         @current_user.restaurants.map.with_index(1) do|restaurant, i|
-            "#{i}. #{restaurant.name}"
-         end 
-     end 
+        @current_user.restaurants.reload.map.with_index(1) do|restaurant, i|
+            binding.pry
+           "#{i}. #{restaurant.name}"
+        end 
+    end 
 
 
     def return_to_main_menu 
@@ -144,9 +139,6 @@ class CliApp
         user_name = gets.chomp  
         @current_user = User.find_or_create_by(name: user_name) 
     end 
-
-
-
 
 end #end of class
 

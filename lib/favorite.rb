@@ -7,4 +7,5 @@ class Favorite < ActiveRecord::Base
     end 
 
 
+
 end

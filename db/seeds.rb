@@ -1,6 +1,6 @@
 require "csv"
 require 'pry'
-
+# Seed data from NYC open data in csv format  - Restaurant Grades for zip 10004 
 csv = <<CSV
 name,location,grade
 77 BURGER,77 PEARL ST,A
