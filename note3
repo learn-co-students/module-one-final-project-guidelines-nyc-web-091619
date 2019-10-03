@@ -1,0 +1,26 @@
+
+puts "
+  +-+-+-+-+-+-+-+ +-+-+ +-+-+-+ +-+-+-+-+-+-+ +-+-+-+-+-+
+  |W|e|l|c|o|m|e| |t|o| |t|h|e| |B|u|c|k|e|t| |L|i|s|t|!|
+  +-+-+-+-+-+-+-+ +-+-+ +-+-+-+ +-+-+-+-+-+-+ +-+-+-+-+-+
+  "
+
+puts "
++-+-+-+-+-+ +-+-+-+ +-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+-+
+|T|h|a|n|k| |Y|o|u| |f|o|r| |y|o|u|r| |s|e|l|e|c|t|i|o|n|!|!|
++-+-+-+-+-+ +-+-+-+ +-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+-+
+"
+
+
+puts "Would you like to confrim? (Y/N)"
+confirm = gets.chomp
+puts "Please input start date (MM/DD/YYYY)"
+input_start_date = gets.chomp
+puts "Please input end date (MM/DD/YYYY)"
+input_end_date = gets.chomp
+
+puts '
++-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+ +-+-+-+-+ +-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+
+|T|h|a|n|k| |y|o|u|,| |y|o|u|r| |T|r|i|p| |h|a|s| |b|e|e|n| |c|o|n|f|i|r|m|e|d|!|
++-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+ +-+-+-+-+ +-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+
+'

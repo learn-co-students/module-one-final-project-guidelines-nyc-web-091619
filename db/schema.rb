@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_203707) do
 
   create_table "destinations", force: :cascade do |t|
     t.string "city"
-    t.string "country"
   end
 
   create_table "travellerdestinations", force: :cascade do |t|

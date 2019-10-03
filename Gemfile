@@ -9,4 +9,4 @@ gem "pry"
 gem "require_all"
 gem 'tty-prompt'
 
-gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
+# gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'

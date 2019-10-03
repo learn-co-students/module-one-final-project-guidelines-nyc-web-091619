@@ -1,4 +1,7 @@
 class Travellerdestination < ActiveRecord::Base
-  belongs_to :travellers
-  belongs_to :destinations
+  belongs_to :traveller
+  belongs_to :destination
+
+# Travellerdestination.create
+
 end
