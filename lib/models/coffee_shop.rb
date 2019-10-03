@@ -92,7 +92,25 @@ class CoffeeShop < ActiveRecord::Base
     else
       Cli.new.splash
     end
-    #put in either rating or refund
+    
+    ### Stretch -- put a spinner and sleep timer for waiting for your coffee
+    rating = prompt.slider("Please rate your coffee!", min:1, max:5)
+    temp_psl.update(rating: rating)
+    if rating == 1
+      if prompt.yes?("So sorry to hear you didn't enjoy your coffee, would you like a refund?") && temp_psl.paid?
+        temp_psl.update(paid?: false)
+        current_user.update(wallet: (current_user.wallet + temp_psl.cost))
+        "Hope it's better next time!"
+      else
+        Cli.new.portal(current_user.username)
+      end
+    else
+      puts "Thanks for rating!"
+      puts "We hope you enjoyed your coffee!"
+      sleep 5
+      Cli.new.portal(current_user.username)
+    end
+    
   end
 
 

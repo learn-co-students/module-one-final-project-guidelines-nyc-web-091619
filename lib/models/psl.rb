@@ -10,10 +10,6 @@ class Psl < ActiveRecord::Base
     (cost_size + espresso_addition).round(2)
   end
 
-  def rate(num)
-    self.rating = num
-  end
-
   # Class Methods
   ## Small/medium/large to be used in Cli#display methods for quick cost getting.
   def self.small(coffee_shop)
