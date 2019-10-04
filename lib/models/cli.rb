@@ -11,8 +11,8 @@ class Cli
     puts colors.yellow(font.write("i       Latte"))
     puts colors.yellow(font.write("c      Season"))
 
+    # Splash screen, 4 selections
     input = prompt.select("Get your PSL on! \nPlease select from the following menu options:", prompts )
-
     case input
     when prompts[0]
       Cli.new.sign_in
@@ -21,10 +21,14 @@ class Cli
     when prompts[2]
       Cli.new.browse
     when prompts[3]
-      puts "Peace, and stay basic!"
-      sleep 2
-      exit
+      Cli.new.exit_program
     end
+  end
+
+  def exit_program
+    puts "Stay basic!"
+    sleep 0.2
+    exit
   end
 
   def sign_in
@@ -85,7 +89,7 @@ class Cli
       else
         current_user.affordable.display(username)
       end
-    when choices[1] 
+    when choices[1]
       rating_min = prompt.slider("Minimum rating?", min:1, max:4).to_f
       current_user.shops_in_da_hood.select do |cafe|
         cafe.how_good_are_my_psls.to_f >= rating_min
@@ -155,7 +159,7 @@ class Cli
       cafehauses = CoffeeShop.all.select do |cafe|
         (cafe.location == location && cafe.how_good_are_my_psls.to_f > 4.0)
       end.sample(10)
-      # cafe_hash = {}
+      ### creating a list to select from where values are objects, but display shows their info
       cafe_list = []
       cafehauses.each do |cafe|
         cafe_hash = {}
@@ -169,7 +173,6 @@ class Cli
           cafe_list << cafe_hash
         end
       end
-      binding.pry
       selection = prompt.select("Here are the ten best coffee shops in your boro:", cafe_list)
       selection.display(username)
       
@@ -186,8 +189,8 @@ end
 
 ### Code I wish I had
 ## Cli#Splash
-#
-#
+#   Effectively a pointer to other functions within CLI
+#   
 #
 #
 #
