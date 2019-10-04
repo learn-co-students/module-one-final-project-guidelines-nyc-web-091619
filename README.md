@@ -1,78 +1,90 @@
-# Module One Final Project Guidelines
-
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
-
-For your final project, we'll be building a Command Line database application.
-
-## Project Requirements
-
-### Option One - Data Analytics Project
-
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
-
-  **Resource:** [Easy Access APIs](https://github.com/learn-co-curriculum/easy-access-apis)
-
-### Option Two - Command Line CRUD App
-
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
-
-### Brainstorming and Proposing a Project Idea
-
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
-
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
+# Welcome to your new pumpkin-spice life, it's real basic
 
 ## Instructions
 
-1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Be prepared to present your project to your peers (3 - 5 minutes) 
-  * _See below for instructions_
-6. *OPTIONAL* Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-7. *OPTIONAL*: Write a blog post about the project and process.
+1. run `bundle install`
+2. execute rake using `bundle exec rake -T`
+3. execute migrations in DB using `bundle exec rake db:migrate`
+4. seed the database using `bundle exec rake db:seed`
+5. open `pry` console using `bundle exec rake console`
+6. run the app using `ruby bin/run.rb`
 
-## Short Presentation Requirements
+## CRUD functionality
 
-Presenting to others on a technical topic is something you will do several times throughout your experience at Flatiron. This will allow you to practice exercising some important skills. 
+### Create
 
-#### Introducing Yourself
-At the beginning of your presentation you'll want to introduce yourself to the audience. Even if you already know your peers and this feels awkward, this is great & low-stakes way to practice for your personal elevator pitch in a welcoming space. Take it seriously and be kind to others; maybe you'll learn something new about someone!
+* Users can be created
+  1. `Cli#create_user` -- creates a user with their specified name, caffeine intake (quota used in User#affordable), and home location.
+* Instances of Pumpkin Spice lattes can be created
+  1. `CoffeeShop#order` -- creates an instance of Psl with the user determined attributes: dairy option, size, sweetener, sweetness, iced?, whip?, and shots.
 
-Aim for a short, 30-second summary of your career progression, leading up to Flatiron School, with an emphasis on your professional skills and goals. Think of it as a condensed narration of your story; where you started, what inspired you to get into coding (did you have a pivotal "aha!" moment?), what you're passionate about, and what you're looking forward to going forward (job and/or career wise).
+### Read
 
-Here are two examples as inspiration:
+Database of Coffee Shops can be viewed by the following methods:
 
-> Hi, my name is Pam and building and creating things have always been in my blood. It started when I used to make model airplanes in the 5th grade, and continued through college, during which I took a few computer science classes. After graduating with a environmental sustainability degree I worked at hazardous waste and solar energy companies. It wasn't long before I realized that my creative spirit had been stifled and was aching to escape...and that coding was what truly made me come alive! I'm now thrilled to be here at Flatiron and soon launching my new career in software engineering!
+* `Cli#browse`
+  1. Find by Location, price-point, and minimum rating
+  
+  2. Top ten list populated at random using coffee shops whose PSLs are rated 4 or higher
+* `Cli#portal`
+  1. Find an affordable option -- This will find a coffee shop whose PSLs you can afford to meet the user's determined "daily quota" attribute using small PSLs with only 1 shot of espresso. This is calculated by dividing the User's wallet contents by (12 oz * daily quota) in order to determine the maximum cost per ounce of coffee that a user can afford, and then comparing it with the `cost_per_oz` attribute of coffee shops.
 
-> Hi, my name is Tony and I'm a former educator with a Bachelor and Masters in English and Professional Studies from Stony Brook. I've held roles as a teacher, academic policy programmer, and dean of students at two NYC public high schools. I've always loved puzzles and solving problems, and I see coding as an extension of this. I'm excited to merge my previous background in education with my new found programming skills to launch a new career as a developer in the ed tech space.
+  2. Find by rating
 
-There's no right or wrong way to introduce yourself. It's your story, so make it your own. :)
+  3. Find a cult-classic -- a cult classic is considered to be a $ coffee shop with relatively high ratings.
 
-#### Technical Presentation Requirements
-Having built your project on your own with a partner, you are the expert on it! Even though that's the case, talking about techincal topics can be challenging. Do your best to communicate what you have learned in a way others can digest.
-  - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-  - Discuss 3 things you learned in the process of working on this project.
-  - Address, if anything, what you would change or add to what you have today?
-  - Present any code you would like to highlight.   
-  - Be prepared to answer questions from your peers!
+  4. Find a classic-bux -- Finds a starbucks in user's home location.
 
----
-### Common Questions:
-- How do I turn off my SQL logger?
-```ruby
-# in config/environment.rb add this line:
-ActiveRecord::Base.logger = nil
-```
+  5. Find a bistro -- Finds an expensive shop
+
+  6. Browse -- See `Cli#Browse`
+* `CoffeeShop#display`
+
+  1. Displays name and location of coffee shop.
+
+  2. Displays cost of standard 1-shot small, medium, and large PSLs.
+
+  3. Displays how the shops PSLs have been rated through `CoffeeShop#how_good_are_my_psls`
+
+### Update
+
+* Users' wallet attribute can be updated
+  1. User's can deposit money in `Cli#portal`
+
+  2. User's wallet is updated on purchase of Psl through `CoffeeShop#order`
+
+  3. User's wallet is updated on refunding of bad Psl
+* Psl's track whether they've been paid or refunded through the paid? attribute
+* Psl's are rated through `CoffeeShop#post_pay_rate`
+  
+### Destroy
+
+* Users can delete their accounts through `Cli#portal`
+
+## The magic of seeding
+
+* Coffee Shop model was populated and tested using CSV data from the data.cityofnewyork.us/api, specifically [DOHMH New York City Restaurant Inspection Results](https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j), and a generic query for 'coffee' within type/name of institution. This CSV dataset is stored in the root directory of this app.
+
+* User model was populated using the `faker` gem
+
+* PSL model was populated using random values
+
+Check out ./db/seeds.rb for more info!
+
+## Prospective work
+
+There are quite a few ways this code could be improved, namely in minor refactors. Good OOD principles can be better represented by refactoring read queries as individual methods within the Psl and CoffeeShop class as instance methods.
+
+A *smart* readback function within `CoffeeShop#order` would be a great addition.
+
+The gemfile can be improved upon by setting environments/groups, however in the *keep it simple* mentality, unless this app were to be expanded upon with an installer, it makes the initial user experience slightly worse with the requirement of additional flags in the `bundle install` statement.
+
+DRYing out the code by including a few new classes and one-to-many relations by abstracting out locations (which would provide scalability) and coffee ingredients (so that all coffee shops don't provide the exact same options as far as dairy, sweetener, etc.).
+
+## Concept
+
+The original brainstorm can be found in CONCEPT.md.
+
+## Created by
+
+Turcan Cicek and Erica Basak
