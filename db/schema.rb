@@ -19,8 +19,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_203707) do
   create_table "travellerdestinations", force: :cascade do |t|
     t.integer "traveller_id"
     t.integer "destination_id"
-    t.datetime "start_date"
-    t.datetime "return_date"
+    t.string "checkin"
   end
 
   create_table "travellers", force: :cascade do |t|
