@@ -67,7 +67,7 @@ class Cli
     puts "Thanks for using our app! Here's $5 to get you started!"
     puts "Your username is #{username}, don't forget it!"
 
-    User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake)#portal
+    User.create(name: name, username: username, home_location: boro, wallet: dollaz, psl_quota: caffeine_intake)
     
     sleep 5
 
@@ -91,7 +91,7 @@ class Cli
     choice = prompt.select("Where would you like to go next?", choices)
 
     case choice
-    when choices[0]
+    when choices[0] # affordable
       if current_user.affordable == 'returns nil'
         puts "You'll never reach your caffeine quota without cashmoney!"
         sleep 2
@@ -99,32 +99,32 @@ class Cli
       else
         current_user.affordable.display(username)
       end
-    when choices[1]
+    when choices[1] # search by rating
       rating_min = prompt.slider("Minimum rating?", min:1, max:4).to_f
       current_user.shops_in_da_hood.select do |cafe|
         cafe.how_good_are_my_psls.to_f >= rating_min
       end.sample.display(username)
-    when choices[2]
+    when choices[2] # kvlt-klassiks
       current_user.shops_in_da_hood.select do |cafe|
         cafe.price_point == "$" && cafe.how_good_are_my_psls.to_f >= 3.0
       end.sample.display(username)
-    when choices[3]
+    when choices[3] # Starbucks
       current_user.shops_in_da_hood.select do |cafe|
         cafe.name.downcase.include?("starbuck")
       end.sample.display(username)
-    when choices[4]
+    when choices[4] # Bistros
       current_user.shops_in_da_hood.select do |cafe|
         cafe.price_point == "$$$"
       end.sample.display(username)
-    when choices[5]
+    when choices[5] # Browse but with user purchase functionality
       browse(username)
-    when choices[6]
+    when choices[6] # Deposit
       num = prompt.ask("How much would you like to deposit?").to_f
       current_user.update(wallet: (current_user.wallet+num))
       portal(username)
-    when choices[7]
+    when choices[7] # Log out
       splash
-    when choices[8]
+    when choices[8] # Delete account
       prompt.warn("This is serious, it will remove your account from the PSL database permanently.")
       if prompt.yes?("Are you sure about this?")
         prompt.error("Continuing will DELETE your account.")
@@ -171,7 +171,7 @@ class Cli
       end.sample(10)
       ### creating a list to select from where values are objects, but display shows their info
       cafe_list = []
-      cafehauses.each do |cafe|
+      cafehauses.each do |cafe| ## Can refactor to a map method, but ultimately it's the same
         cafe_hash = {}
         unless cafe.how_good_are_my_psls == nil?
           cafe_hash[:value] = cafe

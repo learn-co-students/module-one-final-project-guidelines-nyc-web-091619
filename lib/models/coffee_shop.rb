@@ -86,7 +86,6 @@ class CoffeeShop < ActiveRecord::Base
     sweetness = prompt.slider("How sweet would you like your PSL?", min: 1, max: 5)
 
     iced = prompt.yes?("Would you like your PSL iced?")
-    
     whip = prompt.yes?("Would you like whip cream on your PSL?")
     
     shot_choice = prompt.slider("How many espresso shots would you like?", min: 1, max: 4, default: 1)
