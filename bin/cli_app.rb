@@ -12,14 +12,12 @@ def greeting
 
   name = prompt.ask("Please enter your name to get started:", required: true)
   current_user = Traveller.find_or_create_by(name: name)
-  system "clear"
   show_menu(current_user)
 end
 
 
 def trips(current_user)
   current_user.destinations.map do |destination|
-    system "clear"
     puts destination.city
   end 
 end 
@@ -27,7 +25,6 @@ end
 
 def check_in(current_user)
   target = Travellerdestination.find_by(traveller_id: current_user.id)
-  system "clear"
   target.update(checkin: "Yes")
 end
 
@@ -41,7 +38,6 @@ def delete_destination(current_user)
       current_user.travellerdestinations.last.destroy
       puts "Your trips have been cancelled"
    else delete_or_not == "No"
-      trips
       puts "Your trips all still G-double O-D, Good!"
    end
 end
@@ -90,14 +86,12 @@ def show_menu(current_user)
   elsif selection == "Check In"
     puts "It's time to check in!"
     check_in(current_user)
-    system "clear"
     puts "All checked in!"
     return_main_menu(current_user, prompt)
         
   elsif selection == 'Cancel your trip'
     puts 'Cancelling? We got it!'
     delete_destination(current_user)
-    system "clear"
     puts "Sorry to see you go!"
     return_main_menu(current_user, prompt)
 
