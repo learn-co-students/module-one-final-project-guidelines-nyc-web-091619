@@ -61,7 +61,6 @@ class Cli
       puts "Sorry, someone by that name already exists. Try being less basic?"
       name = prompt.ask("What's your name?", required: true)
       username = name.gsub(" ", "")
-      validated?(username)
     end
 
     dollaz = 5
