@@ -21,8 +21,8 @@ class Cli
     when prompts[2]
       Cli.new.browse
     when prompts[3]
-      puts "Peace, and stay basic!"
-      sleep 2
+      puts "Stay basic!"
+      sleep 0.2
       exit
     end
   end

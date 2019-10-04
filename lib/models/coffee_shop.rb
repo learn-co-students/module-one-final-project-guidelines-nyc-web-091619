@@ -89,7 +89,7 @@ class CoffeeShop < ActiveRecord::Base
     
     whip = prompt.yes?("Would you like whip cream on your PSL?")
     
-    shot_choice = prompt.slider("How many espresso shots would you like?", min: 1, max: 4)
+    shot_choice = prompt.slider("How many espresso shots would you like?", min: 1, max: 4, default: 1)
 
     temp_psl = Psl.new( 
       coffee_shop_id: self.id, 
