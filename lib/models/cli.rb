@@ -43,6 +43,10 @@ class Cli
     end
   end
 
+  def validated?(username)
+    User.find_by(username: username) ? false : true
+  end
+
   def create_user # Needs to validate against database
     system "clear"
     font = TTY::Font.new(:straight)
@@ -53,6 +57,13 @@ class Cli
     caffeine_intake = prompt.slider("How many caffeinated drinks do you consume per day?", min:1, max:5)
     name = prompt.ask("What's your name?", required: true)
     username = name.gsub(" ","")
+    until validated?(username)
+      puts "Sorry, someone by that name already exists. Try being less basic?"
+      name = prompt.ask("What's your name?", required: true)
+      username = name.gsub(" ", "")
+      validated?(username)
+    end
+
     dollaz = 5
     puts "Thanks for using our app! Here's $5 to get you started!"
     puts "Your username is #{username}, don't forget it!"
