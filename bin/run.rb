@@ -2,4 +2,5 @@ require_relative '../config/environment'
 
 
 
-puts "HELLO WORLD"
+my_app = CliApp.new
+my_app.run
